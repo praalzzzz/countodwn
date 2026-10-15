@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>s0berz</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Space Grotesk & Syne -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Space Grotesk', 'sans-serif'],
+            display: ['Syne', 'sans-serif'],
+          },
+          colors: {
+            darkBg: '#030304',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Dark aesthetic setup */
+    body {
+      background-color: #030304;
+      color: #ffffff;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* Subtle ambient glow pulse */
+    .ambient-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.035) 0%, rgba(0, 0, 0, 0) 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      animation: pulseGlow 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      0% {
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0.5;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 1;
+      }
+    }
+
+    /* Subtle film grain noise overlay */
+    .grain-overlay {
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      right: -50%;
+      bottom: -50%;
+      width: 200%;
+      height: 200vh;
+      background: transparent url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.03"/%3E%3C/svg%3E') repeat;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    /* Typography glowing polish */
+    .glow-text {
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.25), 0 0 40px rgba(255, 255, 255, 0.1);
+    }
+
+    /* Smooth blur fade-in animation for release message */
+    .fade-in-blur {
+      animation: fadeInBlur 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeInBlur {
+      0% {
+        opacity: 0;
+        filter: blur(16px);
+        transform: scale(0.96);
+      }
+      100% {
+        opacity: 1;
+        filter: blur(0px);
+        transform: scale(1);
+      }
+    }
+
+    /* Clean digit transitions */
+    .time-val {
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.04em;
+    }
+  </style>
+</head>
+<body class="min-h-screen w-full flex items-center justify-center font-sans relative antialiased bg-darkBg text-white">
+
+  <!-- Grain overlay for dark moody cinematic texture -->
+  <div class="grain-overlay"></div>
+
+  <!-- Ambient background lighting -->
+  <div class="ambient-glow"></div>
+
+  <!-- Main Container -->
+  <main class="z-10 flex flex-col items-center justify-center px-4 w-full max-w-5xl text-center">
+    
+    <!-- Active Countdown View -->
+    <div id="countdown-container" class="transition-opacity duration-1000 ease-out w-full">
+      <div class="grid grid-cols-4 gap-3 sm:gap-6 md:gap-10 items-center justify-center w-full max-w-4xl mx-auto">
+        
+        <!-- Days -->
+        <div class="flex flex-col items-center">
+          <span id="days" class="time-val text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tighter glow-text">00</span>
+          <span class="text-[9px] sm:text-xs md:text-sm uppercase tracking-[0.3em] text-neutral-500 font-medium mt-2">Days</span>
+        </div>
+
+        <!-- Hours -->
+        <div class="flex flex-col items-center">
+          <span id="hours" class="time-val text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tighter glow-text">00</span>
+          <span class="text-[9px] sm:text-xs md:text-sm uppercase tracking-[0.3em] text-neutral-500 font-medium mt-2">Hours</span>
+        </div>
+
+        <!-- Minutes -->
+        <div class="flex flex-col items-center">
+          <span id="minutes" class="time-val text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tighter glow-text">00</span>
+          <span class="text-[9px] sm:text-xs md:text-sm uppercase tracking-[0.3em] text-neutral-500 font-medium mt-2">Minutes</span>
+        </div>
+
+        <!-- Seconds -->
+        <div class="flex flex-col items-center">
+          <span id="seconds" class="time-val text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tighter glow-text text-neutral-100">00</span>
+          <span class="text-[9px] sm:text-xs md:text-sm uppercase tracking-[0.3em] text-neutral-500 font-medium mt-2">Seconds</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Released / Completion View (Hidden by default) -->
+    <div id="released-container" class="hidden fade-in-blur flex-col items-center justify-center">
+      <h1 class="font-display text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold tracking-tight text-white glow-text select-text">
+        s0berz out now.
+      </h1>
+    </div>
+
+  </main>
+
+  <!-- Dynamic Countdown Script -->
+  <script>
+    // Target release timestamp: Oct 30, 2026, 00:00:00 local time
+    const TARGET_DATE = new Date('2026-10-30T00:00:00').getTime();
+
+    // DOM Elements
+    const daysEl = document.getElementById('days');
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+    const countdownContainer = document.getElementById('countdown-container');
+    const releasedContainer = document.getElementById('released-container');
+
+    function padZero(num) {
+      return num < 10 ? `0${num}` : num;
+    }
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = TARGET_DATE - now;
+
+      // If release target reached or passed
+      if (distance <= 0) {
+        countdownContainer.classList.add('hidden');
+        releasedContainer.classList.remove('hidden');
+        releasedContainer.classList.add('flex');
+        return true;
+      }
+
+      // Calculations for Days, Hours, Minutes, Seconds
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Render updated timer
+      daysEl.textContent = padZero(days);
+      hoursEl.textContent = padZero(hours);
+      minutesEl.textContent = padZero(minutes);
+      secondsEl.textContent = padZero(seconds);
+
+      return false;
+    }
+
+    // Initial check on load
+    const isFinished = updateCountdown();
+
+    // Run continuous update interval if countdown is still active
+    if (!isFinished) {
+      const timerInterval = setInterval(() => {
+        if (updateCountdown()) {
+          clearInterval(timerInterval);
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
