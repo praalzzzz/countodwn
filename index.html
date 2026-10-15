@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>s0berz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Space Grotesk', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .countdown {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .time-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .number {
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 700;
+            letter-spacing: -2px;
+            line-height: 1;
+        }
+
+        .label {
+            font-size: clamp(0.75rem, 2vw, 1.25rem);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .separator {
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 700;
+            color: #333;
+            line-height: 1;
+            margin-top: -15px;
+        }
+
+        .released {
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            text-transform: lowercase;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="timer" class="countdown">
+            <div class="time-block">
+                <span id="days" class="number">00</span>
+                <span class="label">days</span>
+            </div>
+            <div class="separator">:</div>
+            <div class="time-block">
+                <span id="hours" class="number">00</span>
+                <span class="label">hours</span>
+            </div>
+            <div class="separator">:</div>
+            <div class="time-block">
+                <span id="minutes" class="number">00</span>
+                <span class="label">minutes</span>
+            </div>
+            <div class="separator">:</div>
+            <div class="time-block">
+                <span id="seconds" class="number">00</span>
+                <span class="label">seconds</span>
+            </div>
+        </div>
+
+        <div id="message" class="released">s0berz out now.</div>
+    </div>
+
+    <script>
+        // Target date: October 30, 2026 00:00:00
+        const targetDate = new Date("October 30, 2026 00:00:00").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference <= 0) {
+                document.getElementById("timer").style.display = "none";
+                document.getElementById("message").style.display = "block";
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById("days").textContent = String(days).padStart(2, '0');
+            document.getElementById("hours").textContent = String(hours).padStart(2, '0');
+            document.getElementById("minutes").textContent = String(minutes).padStart(2, '0');
+            document.getElementById("seconds").textContent = String(seconds).padStart(2, '0');
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
